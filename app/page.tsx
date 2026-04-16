@@ -105,12 +105,26 @@ export default function Home() {
   }
 
   function fivesec() {
+    const haptics = new WebHaptics();
+    haptics.trigger(
+      [
+        { duration: 6000, intensity: 0 },
+      ]
+    );
     const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
       haptics.trigger(
-        [{ duration: 7000 }],
-        { intensity: 1 }
+        [
+          { duration: 4500, intensity: 0 },
+          { delay: 40, duration: 760, intensity: 1 },
+          { delay: 40, duration: 760, intensity: 1 },
+          { delay: 40, duration: 760, intensity: 1 },
+          { delay: 40, duration: 760, intensity: 1 },
+          { delay: 40, duration: 760, intensity: 1 },
+          { delay: 40, duration: 760, intensity: 1 },
+          { delay: 40, duration: 760, intensity: 1 },
+        ]
       );
+
     }, 5000);
     return () => clearTimeout(timer);
   }
@@ -172,7 +186,7 @@ export default function Home() {
       <button onClick={() => fivesec()}>Vibrate after 5 sec</button><br />
 
 
-     <HapticPage />
+      <HapticPage />
     </div>
   );
 }
