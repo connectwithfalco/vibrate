@@ -45,17 +45,93 @@ export default function Home() {
   function triggerSeparateVibration() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger("heavy");
+      haptics.trigger([
+        { duration: 40, intensity: 0.7 },
+        { delay: 40, duration: 40, intensity: 0.7 },
+        { delay: 30, duration: 130, intensity: 0.9 },
+        { delay: 50, duration: 50, intensity: 0.6 },
+      ])
     }, 0);
   }
 
 
+  function onesec() {
+    setTimeout(() => {
+      const haptics = new WebHaptics();
+      haptics.trigger([
+        { duration: 40, intensity: 0.7 },
+        { delay: 40, duration: 40, intensity: 0.7 },
+        { delay: 30, duration: 130, intensity: 0.9 },
+        { delay: 50, duration: 50, intensity: 0.6 },
+      ])
+    }, 1000);
+  }
+
+  function twosec() {
+    setTimeout(() => {
+      const haptics = new WebHaptics();
+      haptics.trigger([
+        { duration: 40, intensity: 0.7 },
+        { delay: 40, duration: 40, intensity: 0.7 },
+        { delay: 30, duration: 130, intensity: 0.9 },
+        { delay: 50, duration: 50, intensity: 0.6 },
+      ])
+    }, 2000);
+  }
+
+  function threesec() {
+    setTimeout(() => {
+      const haptics = new WebHaptics();
+      haptics.trigger([
+        { duration: 40, intensity: 0.7 },
+        { delay: 40, duration: 40, intensity: 0.7 },
+        { delay: 30, duration: 130, intensity: 0.9 },
+        { delay: 50, duration: 50, intensity: 0.6 },
+      ])
+    }, 3000);
+  }
+
+  function foursec() {
+    setTimeout(() => {
+      const haptics = new WebHaptics();
+      haptics.trigger([
+        { duration: 40, intensity: 0.7 },
+        { delay: 40, duration: 40, intensity: 0.7 },
+        { delay: 30, duration: 130, intensity: 0.9 },
+        { delay: 50, duration: 50, intensity: 0.6 },
+      ])
+    }, 4000);
+  }
+
+  function fivesec() {
+    setTimeout(() => {
+      const haptics = new WebHaptics();
+      haptics.trigger([
+        { duration: 40, intensity: 0.7 },
+        { delay: 40, duration: 40, intensity: 0.7 },
+        { delay: 30, duration: 130, intensity: 0.9 },
+        { delay: 50, duration: 50, intensity: 0.6 },
+      ])
+    }, 5000);
+  }
+
+
+
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <button onClick={() => triggerDirectMatchVibration()}>triggerDirectMatchVibration</button>
-      <button onClick={() => triggerFullUnmatchedVibration()}>triggerFullUnmatchedVibration</button>
-      <button onClick={() => triggerErrorVibration()}>triggerErrorVibration</button>
-      <button onClick={() => triggerSeparateVibration()}>triggerSeparateVibration</button>
+      <button onClick={() => triggerDirectMatchVibration()}>triggerDirectMatchVibration</button> <br />
+      <button onClick={() => triggerFullUnmatchedVibration()}>triggerFullUnmatchedVibration</button><br />
+      <button onClick={() => triggerErrorVibration()}>triggerErrorVibration</button><br />
+      <button onClick={() => triggerSeparateVibration()}>triggerSeparateVibration</button><br />
+
+
+      <button onClick={() => onesec()}>Vibrate afetr 1 sec</button><br />
+      <button onClick={() => twosec()}>Vibrate after 2 sec</button><br />
+      <button onClick={() => threesec()}>Vibrate after 3 sec</button><br />
+      <button onClick={() => foursec()}>Vibrate after 4 sec</button><br />
+      <button onClick={() => fivesec()}>Vibrate after 5 sec</button><br />
+
     </div>
   );
 }
