@@ -148,13 +148,13 @@ export default function Home() {
     const haptics = new WebHaptics();
     haptics.trigger(
       [
-        { duration: 6000, intensity: 0 },
+        { duration: 6000, intensity: 1 },
       ]
     );
     const timer = setTimeout(() => {
       haptics.trigger(
         [
-          { duration: 4500, intensity: 0 },
+           { duration: 6000, intensity: 1 },
           { delay: 40, duration: 760, intensity: 1 },
           { delay: 40, duration: 760, intensity: 1 },
           { delay: 40, duration: 760, intensity: 1 },
@@ -162,6 +162,7 @@ export default function Home() {
           { delay: 40, duration: 760, intensity: 1 },
           { delay: 40, duration: 760, intensity: 1 },
           { delay: 40, duration: 760, intensity: 1 },
+           { duration: 6000, intensity: 1 },
         ]
       );
 
@@ -173,6 +174,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <button onClick={() => fivesec()}>Vibrate after 5 sec</button><br /><br />
+
       <button onClick={() => triggerDirectMatchVibration()}>triggerDirectMatchVibration</button> <br />
       <button onClick={() => triggerFullUnmatchedVibration()}>triggerFullUnmatchedVibration</button><br />
       <button onClick={() => triggerErrorVibration()}>triggerErrorVibration</button><br />
