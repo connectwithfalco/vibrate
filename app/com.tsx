@@ -2,92 +2,93 @@ import { useState, useRef } from "react";
 import { useHaptic } from "use-haptic";
 
 export const HapticButton = () => {
-  const [isContinuous, setIsContinuous] = useState(false);
-  const [duration, setDuration] = useState(5000); // run time
-  const [pause, setPause] = useState(4000); // pause time
-  const [interval, setIntervalValue] = useState(100);
+    const [isContinuous, setIsContinuous] = useState(false);
+    const [duration, setDuration] = useState(5000); // 5 sec run
+    const [pause, setPause] = useState(4000); // 4 sec pause
+    const [interval, setIntervalValue] = useState(100);
 
-  const { triggerHaptic } = useHaptic();
-  const isRunningRef = useRef(false);
+    const { triggerHaptic } = useHaptic();
+    const runningRef: any = useRef(false);
+    const timeoutRef: any = useRef(null);
 
-  const runHapticCycle = () => {
-    if (!isRunningRef.current) return;
+    const startCycle = () => {
+        if (!runningRef.current) return;
 
-    const startTime = Date.now();
+        let elapsed = 0;
 
-    const vibrate = () => {
-      if (!isRunningRef.current) return;
+        const run = () => {
+            if (!runningRef.current) return;
 
-      if (Date.now() - startTime < duration) {
-        triggerHaptic();
-        setTimeout(vibrate, interval);
-      } else {
-        // Pause after 5 sec
-        setTimeout(() => {
-          runHapticCycle(); // start again after pause
-        }, pause);
-      }
+            if (elapsed < duration) {
+                triggerHaptic();
+                elapsed += interval;
+
+                timeoutRef.current = setTimeout(run, interval);
+            } else {
+                // ✅ After 5 sec complete → pause → restart fresh 5 sec
+                timeoutRef.current = setTimeout(() => {
+                    startCycle(); // 🔁 new fresh cycle (again 5 sec)
+                }, pause);
+            }
+        };
+
+        run();
     };
 
-    vibrate();
-  };
+    const handleClick = () => {
+        if (isContinuous) {
+            runningRef.current = true;
+            startCycle();
+        } else {
+            triggerHaptic();
+        }
+    };
 
-  const handleClick = () => {
-    if (isContinuous) {
-      isRunningRef.current = true;
-      runHapticCycle();
-    } else {
-      triggerHaptic();
-    }
-  };
+    const stopHaptic = () => {
+        runningRef.current = false;
+        clearTimeout(timeoutRef.current);
+    };
 
-  const stopHaptic = () => {
-    isRunningRef.current = false;
-  };
+    return (
+        <div>
+            <button onClick={handleClick}>Start</button>
+            <button onClick={stopHaptic}>Stop</button>
 
-  return (
-    <div className="haptic-btn-container">
-      <button className="haptic-btn" onClick={handleClick} type="button">
-        Start Haptic
-      </button>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={isContinuous}
+                    onChange={() => setIsContinuous((prev) => !prev)}
+                />
+                Continuous
+            </label>
 
-      <button onClick={stopHaptic}>Stop</button>
+            <div>
+                Duration:
+                <input
+                    type="number"
+                    value={duration}
+                    onChange={(e) => setDuration(Number(e.target.value))}
+                />
+            </div>
 
-      <label>
-        <input
-          type="checkbox"
-          checked={isContinuous}
-          onChange={() => setIsContinuous((prev) => !prev)}
-        />
-        Continuous Haptic
-      </label>
+            <div>
+                Pause:
+                <input
+                    type="number"
+                    value={pause}
+                    onChange={(e) => setPause(Number(e.target.value))}
+                />
+            </div>
 
-      <label>
-        Duration (ms):
-        <input
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(Number(e.target.value))}
-        />
-      </label>
-
-      <label>
-        Pause (ms):
-        <input
-          type="number"
-          value={pause}
-          onChange={(e) => setPause(Number(e.target.value))}
-        />
-      </label>
-
-      <label>
-        Interval (ms):
-        <input
-          type="number"
-          value={interval}
-          onChange={(e) => setIntervalValue(Number(e.target.value))}
-        />
-      </label>
-    </div>
-  );
+            <div>
+                Interval:
+                <input
+                    type="number"
+                    value={interval}
+                    onChange={(e) => setIntervalValue(Number(e.target.value))}
+                />
+            </div>
+        </div>
+    );
 };

@@ -184,7 +184,7 @@ export default function Home() {
 
       <button onClick={() => one800sec()}>Vibrate afetr 800 ms</button> <span style={{ color: "green" }}> working</span>  <br />
       <button onClick={() => one900sec()}>Vibrate afetr 900 ms</button> <span style={{ color: "green" }}> working</span><br />
-      <button onClick={() => one99sec()}>Vibrate afetr 999 ms</button> <span style={{ color: "red" }}> not working</span><br />
+      <button onClick={() => one99sec()}>Vibrate afetr 999 ms</button> <span style={{ color: "red" }}> not working some times</span><br />
       <button onClick={() => onesec()}>Vibrate afetr 1 sec</button><span style={{ color: "red" }}> not working</span><br />
       <button onClick={() => twosec()}>Vibrate after 2 sec</button><span style={{ color: "red" }}> not working</span><br />
       <button onClick={() => threesec()}>Vibrate after 3 sec</button><span style={{ color: "red" }}> not working</span><br />
