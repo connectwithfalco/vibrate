@@ -58,72 +58,60 @@ export default function Home() {
   function onesec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 1000);
   }
 
   function twosec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 2000);
   }
 
   function threesec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 3000);
   }
 
   function foursec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 4000);
   }
 
   function fivesec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 5000);
   }
 
   function one800sec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 800);
   }
 
@@ -132,12 +120,10 @@ export default function Home() {
   function one99sec() {
     setTimeout(() => {
       const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
+      haptics.trigger(
+        [{ duration: 800 }],
+        { intensity: 1 }
+      );
     }, 999);
   }
 
