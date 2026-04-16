@@ -5,7 +5,7 @@ import { WebHaptics } from "web-haptics";
 export default function Home() {
 
   function triggerDirectMatchVibration() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger([
         { duration: 30 },
@@ -15,11 +15,12 @@ export default function Home() {
       ])
       console.log("direct matched vibrate");
     }, 0);
+    return () => clearTimeout(timer);
   }
 
 
   function triggerFullUnmatchedVibration() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger([
         { duration: 40, intensity: 0.7 },
@@ -28,22 +29,24 @@ export default function Home() {
         { delay: 50, duration: 50, intensity: 0.6 },
       ])
     }, 0);
+    return () => clearTimeout(timer);
   }
 
 
   function triggerErrorVibration() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 0);
+    return () => clearTimeout(timer);
   }
 
 
   function triggerSeparateVibration() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger([
         { duration: 40, intensity: 0.7 },
@@ -52,93 +55,102 @@ export default function Home() {
         { delay: 50, duration: 50, intensity: 0.6 },
       ])
     }, 0);
+    return () => clearTimeout(timer);
   }
 
 
   function onesec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 1000);
+    return () => clearTimeout(timer);
   }
 
   function twosec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 2000);
+    return () => clearTimeout(timer);
   }
 
   function threesec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 3000);
+    return () => clearTimeout(timer);
   }
 
   function foursec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 4000);
+    return () => clearTimeout(timer);
   }
 
   function fivesec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 5000);
+    return () => clearTimeout(timer);
   }
 
   function one800sec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 800);
+    return () => clearTimeout(timer);
   }
 
 
 
   function one99sec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 999);
+    return () => clearTimeout(timer);
   }
 
 
   function one900sec() {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const haptics = new WebHaptics();
       haptics.trigger(
         [{ duration: 800 }],
         { intensity: 1 }
       );
     }, 900);
+    return () => clearTimeout(timer);
   }
 
-  
+
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
