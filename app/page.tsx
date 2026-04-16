@@ -1,7 +1,7 @@
 "use client";
 
 import { WebHaptics } from "web-haptics";
-import HapticPage from "./com";
+import { HapticButton } from "./com";
 
 export default function Home() {
 
@@ -192,7 +192,10 @@ export default function Home() {
       <button onClick={() => fivesec()}>Vibrate after 5 sec</button><span style={{ color: "red" }}> not working</span><br />
 
 
-      <HapticPage />
+      <HapticButton />
+
+
+
     </div>
   );
 }

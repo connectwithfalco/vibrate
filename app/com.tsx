@@ -1,50 +1,58 @@
-"use client";
-import { useRef } from "react";
+import { useState } from "react";
+import { useHaptic } from "use-haptic";
 
-export default function HapticPage() {
-  const switchRef = useRef<HTMLInputElement>(null);
+export const HapticButton = () => {
+  const [isContinuous, setIsContinuous] = useState(false);
+  const [duration, setDuration] = useState(5000);
+  const [interval, setInterval] = useState(100);
+  const { triggerHaptic } = useHaptic();
 
-  const triggerHaptic = () => {
-    if (switchRef.current) {
-      switchRef.current.checked = !switchRef.current.checked;
-      // Dispatch change event to trigger iOS haptic
-      switchRef.current.dispatchEvent(new Event("change", { bubbles: true }));
+  const handleClick = () => {
+    if (isContinuous) {
+      const startTime = Date.now();
+
+      const continuousVibration = () => {
+        if (Date.now() - startTime < duration) {
+          triggerHaptic();
+          setTimeout(continuousVibration, interval);
+        }
+      };
+
+      continuousVibration();
+    } else {
+      triggerHaptic();
     }
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      {/* Hidden iOS switch — must be in DOM, not display:none */}
-      <label
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          width: 1,
-          height: 1,
-          overflow: "hidden",
-        }}
-      >
+    <div className="haptic-btn-container">
+      <button className="haptic-btn" onClick={handleClick} type="button">
+        Feel Haptic !!!
+      </button>
+      <label>
         <input
-          ref={switchRef}
           type="checkbox"
-          // @ts-expect-error - `switch` is iOS Safari 17.4+ only
-          switch=""
+          checked={isContinuous}
+          onChange={() => setIsContinuous((prev) => !prev)}
+        />
+        Continuous Haptic
+      </label>
+      <label>
+        Duration (ms):
+        <input
+          type="number"
+          value={duration}
+          onChange={(e) => setDuration(Number(e.target.value))}
         />
       </label>
-
-      <button
-        onClick={triggerHaptic}
-        style={{
-          padding: "16px 32px",
-          fontSize: 18,
-          background: "#007aff",
-          color: "white",
-          border: "none",
-          borderRadius: 12,
-        }}
-      >
-        Tap for Haptic 📳
-      </button>
+      <label>
+        Interval (ms):
+        <input
+          type="number"
+          value={interval}
+          onChange={(e) => setInterval(Number(e.target.value))}
+        />
+      </label>
     </div>
   );
-}
+};
