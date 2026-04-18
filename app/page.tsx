@@ -128,6 +128,14 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <button onClick={() => vibrationPattern(2)}>PWA PROJECT CODE</button>
+      <br />
+      <button onClick={() => {
+        setTimeout(() => {
+          vibrationPattern(2);
+        }, 2000);
+      }}>
+        PWA PROJECT CODE After 2 sec
+      </button>
 
 
       <br />
