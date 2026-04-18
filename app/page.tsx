@@ -5,7 +5,7 @@ import { HapticButton } from "./com";
 import useHaptic from "./useHaptic";
 
 export default function Home() {
-  // ── Untouched — working fine ───────────────────────────────────────────────
+  // ── These 4 untouched — work fine ─────────────────────────────────────────
 
   function triggerDirectMatchVibration() {
     const timer = setTimeout(() => {
@@ -58,97 +58,67 @@ export default function Home() {
     return () => clearTimeout(timer);
   }
 
-  // ── Delayed functions — FIXED ──────────────────────────────────────────────
-  // KEY FIX: Use `delay` on the FIRST step (true silence/pause)
-  // NOT intensity:0 (that still physically vibrates)
-  // WebHaptics is created INSTANTLY on tap → gesture window stays alive
-  // delay: Xms on first step = true zero vibration for X milliseconds
+  // ── Delayed functions — navigator.vibrate() inside setTimeout ─────────────
+  // navigator.vibrate has ZERO gesture restriction — works at ANY delay
+  // WebHaptics is NOT used here because it always fires immediately on call
 
   function one800sec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 800, duration: 800, intensity: 1 }, // truly silent 800ms → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 800ms passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 800ms passed — vibration started");
     }, 800);
   }
 
   function one900sec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 900, duration: 800, intensity: 1 }, // truly silent 900ms → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 900ms passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 900ms passed — vibration started");
     }, 900);
   }
 
   function one99sec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 999, duration: 800, intensity: 1 }, // truly silent 999ms → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 999ms passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 999ms passed — vibration started");
     }, 999);
   }
 
   function onesec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 1000, duration: 800, intensity: 1 }, // truly silent 1s → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 1 second passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 1 second passed — vibration started");
     }, 1000);
   }
 
   function twosec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 2000, duration: 800, intensity: 1 }, // truly silent 2s → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 2 seconds passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 2 seconds passed — vibration started");
     }, 2000);
   }
 
   function threesec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 3000, duration: 800, intensity: 1 }, // truly silent 3s → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 3 seconds passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 3 seconds passed — vibration started");
     }, 3000);
   }
 
   function foursec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 4000, duration: 800, intensity: 1 }, // truly silent 4s → then BUZZ
-    ]);
     setTimeout(() => {
-      console.log("✅ 4 seconds passed — HIGH intensity vibration started");
+      navigator.vibrate([800]);
+      console.log("✅ 4 seconds passed — vibration started");
     }, 4000);
   }
 
   function fivesec() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 5000, duration: 760, intensity: 1 }, // truly silent 5s → then 7 BUZZES
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-    ]);
+    // 7 buzzes after 5 seconds = flat pattern passed to navigator.vibrate
+    // [buzz, pause, buzz, pause ...] all in one call
     setTimeout(() => {
-      console.log(
-        "✅ 5 seconds passed — HIGH intensity vibration started (7 buzzes ~10sec)",
-      );
+      navigator.vibrate([
+        760, 200, 760, 200, 760, 200, 760, 200, 760, 200, 760, 200, 760,
+      ]);
+      console.log("✅ 5 seconds passed — HIGH intensity 7 buzzes started");
     }, 5000);
   }
 
