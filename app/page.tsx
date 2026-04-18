@@ -127,7 +127,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <button onClick={() => trigger("medium")}>Tap me</button>
+      <button onClick={() => vibrationPattern(2)}>PWA PROJECT CODE</button>
+
 
       <br />
       <br />
@@ -179,9 +180,8 @@ export default function Home() {
       <span style={{ color: "green" }}> working</span>
       <br />
 
-      <button onClick={() => vibrationPattern()}>vibrationPattern</button>
 
-      <HapticButton />
+      {/* <HapticButton /> */}
     </div>
   );
 }
