@@ -193,6 +193,7 @@ export default function Home() {
       fontSize: "16px",
       marginTop: "20px"
     }}
+    
   >
     Open Vibration Test
   </button>
