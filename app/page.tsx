@@ -8,6 +8,7 @@ export default function Home() {
 
   const { trigger, triggerSequence } = useHaptic();
 
+  // These use WebHaptics directly with no delay — fine as-is
   function triggerDirectMatchVibration() {
     const haptics = new WebHaptics();
     haptics.trigger([
@@ -46,7 +47,8 @@ export default function Home() {
     ]);
   }
 
-  // All delayed — pattern [1, delayMs, buzz] called synchronously on tap
+  // These now use navigator.vibrate inside setTimeout directly
+  // navigator.vibrate has NO gesture restriction — works at any delay
   function one800ms()  { trigger('heavy', 800);  }
   function one900ms()  { trigger('heavy', 900);  }
   function one999ms()  { trigger('heavy', 999);  }
@@ -54,7 +56,6 @@ export default function Home() {
   function twosec()    { trigger('heavy', 2000); }
   function threesec()  { trigger('heavy', 3000); }
   function foursec()   { trigger('heavy', 4000); }
-
   function fivesec() {
     triggerSequence([
       { duration: 760, gap: 200 },
