@@ -1,155 +1,107 @@
 "use client";
 
+import React from 'react';
 import { WebHaptics } from "web-haptics";
-import { HapticButton } from "./com";
-import useHaptic from "./useHaptic";
+import useHaptic from './useHaptic';
+
+// Define the shape of the haptic steps
+interface HapticStep {
+  duration: number;
+  delay?: number;
+  intensity?: number;
+}
+
+// Simple HapticButton mock if you don't have the file
+const HapticButton = () => <button className="p-2 border rounded">Haptic Button Component</button>;
 
 export default function Home() {
   const { trigger } = useHaptic();
 
-  function triggerDirectMatchVibration() {
-    navigator.vibrate([
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-    ]);
-    console.log("direct matched vibrate");
-  }
+  /**
+   * FIX: Properly typed 'pattern' as HapticStep[]
+   */
+  const playVibration = (pattern: HapticStep[], delay: number = 0) => {
+    const timer = setTimeout(() => {
+      try {
+        // Ensure this only runs in the browser
+        if (typeof window !== "undefined") {
+          const haptics = new WebHaptics();
+          haptics.trigger(pattern);
+          console.log(`Vibration triggered after ${delay}ms`);
+        }
+      } catch (error) {
+        console.warn("Vibration blocked: Browser security requires user activation < 1000ms.");
+      }
+    }, delay);
+    
+    return () => clearTimeout(timer);
+  };
 
-  function triggerFullUnmatchedVibration() {
-    navigator.vibrate([
-      40, 40,
-      40, 30,
-      130, 50,
-      50,
-    ]);
-  }
+  // Pre-defined patterns with explicit typing
+  const directMatchPattern: HapticStep[] = [
+    { delay: 200, duration: 760, intensity: 1 },
+    { delay: 200, duration: 760, intensity: 1 },
+    { delay: 200, duration: 760, intensity: 1 },
+    { delay: 200, duration: 760, intensity: 1 },
+    { delay: 200, duration: 760, intensity: 1 },
+    { delay: 200, duration: 760, intensity: 1 },
+    { delay: 200, duration: 760, intensity: 1 },
+  ];
 
-  function triggerErrorVibration() {
-    navigator.vibrate([7000]);
-  }
-
-  function triggerSeparateVibration() {
-    navigator.vibrate([
-      40, 40,
-      40, 30,
-      130, 50,
-      50,
-    ]);
-  }
-
-  function one800sec() {
-    navigator.vibrate([800, 800]);
-  }
-
-  function one900sec() {
-    navigator.vibrate([900, 800]);
-  }
-
-  function one99sec() {
-    navigator.vibrate([999, 800]);
-  }
-
-  function onesec() {
-    navigator.vibrate([1000, 800]);
-  }
-
-  function twosec() {
-    navigator.vibrate([2000, 800]);
-  }
-
-  function threesec() {
-    navigator.vibrate([3000, 800]);
-  }
-
-  function foursec() {
-    navigator.vibrate([4000, 800]);
-  }
-
-  function fivesec() {
-    navigator.vibrate([
-      5000,
-      760,
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-      200, 760,
-    ]);
-  }
+  const unmatchedPattern: HapticStep[] = [
+    { duration: 40, intensity: 0.7 },
+    { delay: 40, duration: 40, intensity: 0.7 },
+    { delay: 30, duration: 130, intensity: 0.9 },
+    { delay: 50, duration: 50, intensity: 0.6 },
+  ];
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <button onClick={() => trigger("medium")}>
-        Tap me
+    <div className="flex flex-col gap-4 items-center justify-center min-h-screen bg-zinc-50 dark:bg-black p-10 text-sm text-zinc-900 dark:text-zinc-100">
+      <h1 className="font-bold text-xl mb-4">Haptic TSX Tester</h1>
+
+      <button 
+        className="px-6 py-3 bg-blue-600 text-white rounded-lg active:scale-95 transition-transform"
+        onClick={() => trigger('medium')}
+      >
+        Immediate Tap
       </button>
 
-      <br />
-      <br />
-      <br />
+      <div className="flex flex-col gap-2 w-full max-w-sm mt-6">
+        <button onClick={() => playVibration(directMatchPattern, 0)} className="text-left border p-3 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
+          Direct Match <span className="text-green-500 float-right">Working</span>
+        </button>
+        
+        <button onClick={() => playVibration(unmatchedPattern, 0)} className="text-left border p-3 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
+          Full Unmatched <span className="text-green-500 float-right">Working</span>
+        </button>
 
-      <button onClick={triggerDirectMatchVibration}>
-        triggerDirectMatchVibration
-      </button>
-      <span style={{ color: "green" }}> working</span>
-      <br />
+        <button onClick={() => playVibration([{ duration: 7000 }], 0)} className="text-left border p-3 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
+          Error Pulse (7s) <span className="text-green-500 float-right">Working</span>
+        </button>
 
-      <button onClick={triggerFullUnmatchedVibration}>
-        triggerFullUnmatchedVibration
-      </button>
-      <span style={{ color: "green" }}> working</span>
-      <br />
+        <div className="h-px bg-zinc-300 dark:bg-zinc-700 my-4" />
 
-      <button onClick={triggerErrorVibration}>
-        triggerErrorVibration
-      </button>
-      <span style={{ color: "green" }}> working</span>
-      <br />
+        <button onClick={() => playVibration([{ duration: 800 }], 800)} className="text-left border p-3 rounded opacity-80">
+          Delay 800ms <span className="text-green-500 float-right">Working</span>
+        </button>
 
-      <button onClick={triggerSeparateVibration}>
-        triggerSeparateVibration
-      </button>
-      <span style={{ color: "green" }}> working</span>
-      <br />
+        <button onClick={() => playVibration([{ duration: 800 }], 999)} className="text-left border p-3 rounded opacity-80">
+          Delay 999ms <span className="text-orange-500 float-right">Unstable</span>
+        </button>
 
-      <button onClick={one800sec}>Vibrate after 800 ms</button>
-      <span style={{ color: "green" }}> working</span>
-      <br />
+        <button onClick={() => playVibration([{ duration: 800 }], 2000)} className="text-left border p-3 rounded opacity-50">
+          Delay 2s <span className="text-red-500 float-right">Blocked</span>
+        </button>
+      </div>
 
-      <button onClick={one900sec}>Vibrate after 900 ms</button>
-      <span style={{ color: "green" }}> working</span>
-      <br />
+      <div className="mt-8">
+        <HapticButton />
+      </div>
 
-      <button onClick={one99sec}>Vibrate after 999 ms</button>
-      <span style={{ color: "green" }}> fixed</span>
-      <br />
-
-      <button onClick={onesec}>Vibrate after 1 sec</button>
-      <span style={{ color: "green" }}> fixed</span>
-      <br />
-
-      <button onClick={twosec}>Vibrate after 2 sec</button>
-      <span style={{ color: "green" }}> fixed</span>
-      <br />
-
-      <button onClick={threesec}>Vibrate after 3 sec</button>
-      <span style={{ color: "green" }}> fixed</span>
-      <br />
-
-      <button onClick={foursec}>Vibrate after 4 sec</button>
-      <span style={{ color: "green" }}> fixed</span>
-      <br />
-
-      <button onClick={fivesec}>Vibrate after 5 sec</button>
-      <span style={{ color: "green" }}> fixed</span>
-      <br />
-
-      <HapticButton />
+      <footer className="mt-auto text-center text-zinc-500 text-xs max-w-xs">
+        Browser Security: If a vibration is scheduled for {'>'} 1000ms after a click, 
+        the browser cancels the "User Activation" and blocks hardware access.
+      </footer>
     </div>
   );
 }
