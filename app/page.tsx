@@ -173,19 +173,19 @@ export default function Home() {
       <span style={{ color: "green" }}> working</span>
       <br />
       <button onClick={() => onesec()}>Vibrate after 1 sec</button>
-      <span style={{ color: "green" }}> working</span>
+      <span style={{ color: "red" }}> some time working  or not</span>
       <br />
       <button onClick={() => twosec()}>Vibrate after 2 sec</button>
-      <span style={{ color: "green" }}> working</span>
+      <span style={{ color: "red" }}> not working</span>
       <br />
       <button onClick={() => threesec()}>Vibrate after 3 sec</button>
-      <span style={{ color: "green" }}> working</span>
+      <span style={{ color: "red" }}>not working</span>
       <br />
       <button onClick={() => foursec()}>Vibrate after 4 sec</button>
-      <span style={{ color: "green" }}> working</span>
+      <span style={{ color: "red" }}> not working</span>
       <br />
       <button onClick={() => fivesec()}>Vibrate after 5 sec</button>
-      <span style={{ color: "green" }}> working</span>
+      <span style={{ color: "red" }}> not working</span>
       <br />
 
 
