@@ -1,32 +1,43 @@
+const iosVibrate = () => {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    gainNode.gain.value = 0;
+    oscillator.frequency.value = 1;
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.01);
+  } catch (e) {
+    console.log("iOS haptic failed", e);
+  }
+};
+
 const useHaptic = () => {
+  const trigger = (type = "medium") => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  const trigger = (type = 'medium', delayMs = 0) => {
-    if (typeof navigator === 'undefined' || !navigator.vibrate) return;
-    // navigator.vibrate does NOT need user gesture — setTimeout is perfectly fine
-    const durations = { light: 30, medium: 60, heavy: 100 };
-    const duration = durations[type] || 60;
-
-    if (delayMs > 0) {
-      setTimeout(() => navigator.vibrate([duration]), delayMs);
+    if (isIOS) {
+      iosVibrate();
     } else {
-      navigator.vibrate([duration]);
+      if (navigator.vibrate) {
+        const patterns = {
+          light: [30],
+          medium: [60],
+          heavy: [100],
+        };
+
+        navigator.vibrate(patterns[type] || [60]);
+      }
     }
   };
 
-  const triggerSequence = (steps = [], delayMs = 0) => {
-    if (typeof navigator === 'undefined' || !navigator.vibrate) return;
-    // steps = [{ duration, gap }, ...]
-    // Build flat pattern: [buzz, pause, buzz, pause, ...]
-    const flat = [];
-    steps.forEach((step, i) => {
-      flat.push(step.duration);
-      if (i < steps.length - 1) flat.push(step.gap ?? 200);
-    });
-
-    setTimeout(() => navigator.vibrate(flat), delayMs);
-  };
-
-  return { trigger, triggerSequence };
+  return { trigger };
 };
 
 export default useHaptic;

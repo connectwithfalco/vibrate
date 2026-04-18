@@ -2,121 +2,154 @@
 
 import { WebHaptics } from "web-haptics";
 import { HapticButton } from "./com";
-import useHaptic from './useHaptic';
+import useHaptic from "./useHaptic";
 
 export default function Home() {
+  const { trigger } = useHaptic();
 
-  const { trigger, triggerSequence } = useHaptic();
-
-  // These use WebHaptics directly with no delay — fine as-is
   function triggerDirectMatchVibration() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
-      { delay: 200, duration: 760, intensity: 1 },
+    navigator.vibrate([
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
     ]);
+    console.log("direct matched vibrate");
   }
 
   function triggerFullUnmatchedVibration() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { duration: 40, intensity: 0.7 },
-      { delay: 40, duration: 40, intensity: 0.7 },
-      { delay: 30, duration: 130, intensity: 0.9 },
-      { delay: 50, duration: 50, intensity: 0.6 },
+    navigator.vibrate([
+      40, 40,
+      40, 30,
+      130, 50,
+      50,
     ]);
   }
 
   function triggerErrorVibration() {
-    const haptics = new WebHaptics();
-    haptics.trigger([{ duration: 7000 }], { intensity: 1 });
+    navigator.vibrate([7000]);
   }
 
   function triggerSeparateVibration() {
-    const haptics = new WebHaptics();
-    haptics.trigger([
-      { duration: 40, intensity: 0.7 },
-      { delay: 40, duration: 40, intensity: 0.7 },
-      { delay: 30, duration: 130, intensity: 0.9 },
-      { delay: 50, duration: 50, intensity: 0.6 },
+    navigator.vibrate([
+      40, 40,
+      40, 30,
+      130, 50,
+      50,
     ]);
   }
 
-  // These now use navigator.vibrate inside setTimeout directly
-  // navigator.vibrate has NO gesture restriction — works at any delay
-  function one800ms()  { trigger('heavy', 800);  }
-  function one900ms()  { trigger('heavy', 900);  }
-  function one999ms()  { trigger('heavy', 999);  }
-  function onesec()    { trigger('heavy', 1000); }
-  function twosec()    { trigger('heavy', 2000); }
-  function threesec()  { trigger('heavy', 3000); }
-  function foursec()   { trigger('heavy', 4000); }
+  function one800sec() {
+    navigator.vibrate([800, 800]);
+  }
+
+  function one900sec() {
+    navigator.vibrate([900, 800]);
+  }
+
+  function one99sec() {
+    navigator.vibrate([999, 800]);
+  }
+
+  function onesec() {
+    navigator.vibrate([1000, 800]);
+  }
+
+  function twosec() {
+    navigator.vibrate([2000, 800]);
+  }
+
+  function threesec() {
+    navigator.vibrate([3000, 800]);
+  }
+
+  function foursec() {
+    navigator.vibrate([4000, 800]);
+  }
+
   function fivesec() {
-    triggerSequence([
-      { duration: 760, gap: 200 },
-      { duration: 760, gap: 200 },
-      { duration: 760, gap: 200 },
-      { duration: 760, gap: 200 },
-      { duration: 760, gap: 200 },
-      { duration: 760, gap: 200 },
-      { duration: 760 },
-    ], 5000);
+    navigator.vibrate([
+      5000,
+      760,
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
+      200, 760,
+    ]);
   }
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-
-      <button onClick={() => trigger('medium')}>
+      <button onClick={() => trigger("medium")}>
         Tap me
       </button>
 
-      <br /><br /><br />
-
-      <button onClick={triggerDirectMatchVibration}>triggerDirectMatchVibration</button>
-      <span style={{ color: "green" }}> working</span><br />
-
-      <button onClick={triggerFullUnmatchedVibration}>triggerFullUnmatchedVibration</button>
-      <span style={{ color: "green" }}> working</span><br />
-
-      <button onClick={triggerErrorVibration}>triggerErrorVibration</button>
-      <span style={{ color: "green" }}> working</span><br />
-
-      <button onClick={triggerSeparateVibration}>triggerSeparateVibration</button>
-      <span style={{ color: "green" }}> working</span><br />
-
+      <br />
+      <br />
       <br />
 
-      <button onClick={one800ms}>Vibrate after 800ms</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <button onClick={triggerDirectMatchVibration}>
+        triggerDirectMatchVibration
+      </button>
+      <span style={{ color: "green" }}> working</span>
+      <br />
 
-      <button onClick={one900ms}>Vibrate after 900ms</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <button onClick={triggerFullUnmatchedVibration}>
+        triggerFullUnmatchedVibration
+      </button>
+      <span style={{ color: "green" }}> working</span>
+      <br />
 
-      <button onClick={one999ms}>Vibrate after 999ms</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <button onClick={triggerErrorVibration}>
+        triggerErrorVibration
+      </button>
+      <span style={{ color: "green" }}> working</span>
+      <br />
+
+      <button onClick={triggerSeparateVibration}>
+        triggerSeparateVibration
+      </button>
+      <span style={{ color: "green" }}> working</span>
+      <br />
+
+      <button onClick={one800sec}>Vibrate after 800 ms</button>
+      <span style={{ color: "green" }}> working</span>
+      <br />
+
+      <button onClick={one900sec}>Vibrate after 900 ms</button>
+      <span style={{ color: "green" }}> working</span>
+      <br />
+
+      <button onClick={one99sec}>Vibrate after 999 ms</button>
+      <span style={{ color: "green" }}> fixed</span>
+      <br />
 
       <button onClick={onesec}>Vibrate after 1 sec</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <span style={{ color: "green" }}> fixed</span>
+      <br />
 
       <button onClick={twosec}>Vibrate after 2 sec</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <span style={{ color: "green" }}> fixed</span>
+      <br />
 
       <button onClick={threesec}>Vibrate after 3 sec</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <span style={{ color: "green" }}> fixed</span>
+      <br />
 
       <button onClick={foursec}>Vibrate after 4 sec</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <span style={{ color: "green" }}> fixed</span>
+      <br />
 
-      <button onClick={fivesec}>Vibrate after 5 sec (7 buzzes)</button>
-      <span style={{ color: "green" }}> ✓ fixed</span><br />
+      <button onClick={fivesec}>Vibrate after 5 sec</button>
+      <span style={{ color: "green" }}> fixed</span>
+      <br />
 
       <HapticButton />
-
     </div>
   );
 }
