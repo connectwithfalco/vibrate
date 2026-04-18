@@ -6,204 +6,111 @@ import useHaptic from './useHaptic';
 
 export default function Home() {
 
+  // ✅ These work because setTimeout(fn, 0) fires WITHIN the ~1000ms activation window
   function triggerDirectMatchVibration() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger([
-        // { duration: 30 },
-        // { delay: 60, duration: 40, intensity: 1 },
-        // { delay: 50, duration: 40, intensity: 1 },
-        // { delay: 80, duration: 50, intensity: 1 },
-
-        { delay: 200, duration: 760, intensity: 1 },
-        { delay: 200, duration: 760, intensity: 1 },
-        { delay: 200, duration: 760, intensity: 1 },
-        { delay: 200, duration: 760, intensity: 1 },
-        { delay: 200, duration: 760, intensity: 1 },
-        { delay: 200, duration: 760, intensity: 1 },
-        { delay: 200, duration: 760, intensity: 1 },
-      ])
-      console.log("direct matched vibrate");
-    }, 0);
-    return () => clearTimeout(timer);
+    navigator.vibrate([
+      760, 200,
+      760, 200,
+      760, 200,
+      760, 200,
+      760, 200,
+      760, 200,
+      760,
+    ]);
   }
-
 
   function triggerFullUnmatchedVibration() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
-    }, 0);
-    return () => clearTimeout(timer);
+    navigator.vibrate([
+      40, 40,
+      40, 30,
+      130, 50,
+      50,
+    ]);
   }
-
 
   function triggerErrorVibration() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 7000 }],
-        { intensity: 1 }
-      );
-    }, 0);
-    return () => clearTimeout(timer);
+    navigator.vibrate([7000]);
   }
-
 
   function triggerSeparateVibration() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger([
-        { duration: 40, intensity: 0.7 },
-        { delay: 40, duration: 40, intensity: 0.7 },
-        { delay: 30, duration: 130, intensity: 0.9 },
-        { delay: 50, duration: 50, intensity: 0.6 },
-      ])
-    }, 0);
-    return () => clearTimeout(timer);
+    navigator.vibrate([
+      40, 40,
+      40, 30,
+      130, 50,
+      50,
+    ]);
   }
 
-
+  // ✅ FIX: Call navigator.vibrate() immediately on click.
+  // Use [0, delayMs, duration] — first 0 = no initial buzz, delayMs = silence, duration = actual buzz
   function onesec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 1000);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 1000, 800]);
   }
 
   function twosec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 2000);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 2000, 800]);
   }
 
   function threesec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 3000);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 3000, 800]);
   }
 
   function foursec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 4000);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 4000, 800]);
   }
 
   function one800sec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 800);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 800, 800]);
   }
-
-
 
   function one99sec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 999);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 999, 800]);
   }
-
 
   function one900sec() {
-    const timer = setTimeout(() => {
-      const haptics = new WebHaptics();
-      haptics.trigger(
-        [{ duration: 800 }],
-        { intensity: 1 }
-      );
-    }, 900);
-    return () => clearTimeout(timer);
+    navigator.vibrate([0, 900, 800]);
   }
 
-
-
   function fivesec() {
-    const haptics = new WebHaptics();
-    const timer = setTimeout(() => {
-      haptics.trigger(
-        [
-          { delay: 200, duration: 760, intensity: 1 },
-          { delay: 200, duration: 760, intensity: 1 },
-          { delay: 200, duration: 760, intensity: 1 },
-          { delay: 200, duration: 760, intensity: 1 },
-          { delay: 200, duration: 760, intensity: 1 },
-          { delay: 200, duration: 760, intensity: 1 },
-          { delay: 200, duration: 760, intensity: 1 },
-        ]
-      );
-
-    }, 5000);
-    return () => clearTimeout(timer);
+    // pause 5s then 7 buzzes with 200ms gaps
+    navigator.vibrate([
+      0, 5000,
+      760, 200,
+      760, 200,
+      760, 200,
+      760, 200,
+      760, 200,
+      760, 200,
+      760,
+    ]);
   }
 
   const { trigger } = useHaptic();
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      {/* <button onClick={() => fivesec()}>Vibrate after 5 sec</button><br /><br /> */}
 
       <button onClick={() => trigger('medium')}>
         Tap me
       </button>
 
-      <br />
-      <br />
-      <br />
+      <br /><br /><br />
 
-      <button onClick={() => triggerDirectMatchVibration()}>triggerDirectMatchVibration</button><span style={{ color: "green" }}> working</span>  <br />
-      <button onClick={() => triggerFullUnmatchedVibration()}>triggerFullUnmatchedVibration</button><span style={{ color: "green" }}> working</span> <br />
-      <button onClick={() => triggerErrorVibration()}>triggerErrorVibration</button><span style={{ color: "green" }}> working</span> <br />
-      <button onClick={() => triggerSeparateVibration()}>triggerSeparateVibration</button><span style={{ color: "green" }}> working</span> <br />
+      <button onClick={() => triggerDirectMatchVibration()}>triggerDirectMatchVibration</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => triggerFullUnmatchedVibration()}>triggerFullUnmatchedVibration</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => triggerErrorVibration()}>triggerErrorVibration</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => triggerSeparateVibration()}>triggerSeparateVibration</button><span style={{ color: "green" }}> working</span><br />
 
-
-
-      <button onClick={() => one800sec()}>Vibrate afetr 800 ms</button> <span style={{ color: "green" }}> working</span>  <br />
-      <button onClick={() => one900sec()}>Vibrate afetr 900 ms</button> <span style={{ color: "green" }}> working</span><br />
-      <button onClick={() => one99sec()}>Vibrate afetr 999 ms</button> <span style={{ color: "red" }}> not working some times</span><br />
-      <button onClick={() => onesec()}>Vibrate afetr 1 sec</button><span style={{ color: "red" }}> not working</span><br />
-      <button onClick={() => twosec()}>Vibrate after 2 sec</button><span style={{ color: "red" }}> not working</span><br />
-      <button onClick={() => threesec()}>Vibrate after 3 sec</button><span style={{ color: "red" }}> not working</span><br />
-      <button onClick={() => foursec()}>Vibrate after 4 sec</button><span style={{ color: "red" }}> not working</span><br />
-      <button onClick={() => fivesec()}>Vibrate after 5 sec</button><span style={{ color: "red" }}> not working</span><br />
-
+      <button onClick={() => one800sec()}>Vibrate after 800 ms</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => one900sec()}>Vibrate after 900 ms</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => one99sec()}>Vibrate after 999 ms</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => onesec()}>Vibrate after 1one sec</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => twosec()}>Vibrate after 2 sec</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => threesec()}>Vibrate after 3 sec</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => foursec()}>Vibrate after 4 sec</button><span style={{ color: "green" }}> working</span><br />
+      <button onClick={() => fivesec()}>Vibrate after 5 sec</button><span style={{ color: "green" }}> working</span><br />
 
       <HapticButton />
-
-
 
     </div>
   );

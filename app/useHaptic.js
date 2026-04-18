@@ -22,42 +22,30 @@ const useHaptic = () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     if (isIOS) {
-      // ✅ Create AudioContext IMMEDIATELY on gesture (inside activation window)
-      // Then schedule sound start using ctx.currentTime + delay
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioContext();
-        const oscillator = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        gainNode.gain.value = 0;
-        oscillator.frequency.value = 1;
+      // ❌ No web API exists for iOS haptics from a browser.
+      // Only works if running inside a native WKWebView with a JS bridge.
+      // AudioContext trick does NOT trigger vibration — it's a myth.
+      console.warn('iOS haptics not supported in browser/PWA context.');
+      return;
+    }
 
-        const startAt = ctx.currentTime + delayMs / 1000; // ← Web Audio clock
-        oscillator.start(startAt);
-        oscillator.stop(startAt + 0.01);
-      } catch (e) {}
+    // ✅ Android / other — navigator.vibrate works
+    if (!navigator.vibrate) return;
 
+    const durations = {
+      light:  30,
+      medium: 60,
+      heavy:  100,
+    };
+
+    const vibrateDuration = durations[type] ?? 60;
+
+    if (delayMs > 0) {
+      // Pattern: [vibrate, pause, vibrate]
+      // First slot MUST be vibration (even if 0), second is pause, third is actual buzz
+      navigator.vibrate([0, delayMs, vibrateDuration]);
     } else {
-      // Android: pre-register vibration immediately with pattern delays built-in
-      if (navigator.vibrate) {
-        const patterns = {
-          light: [30],
-          medium: [60],
-          heavy: [100],
-        };
-
-        const pattern = patterns[type] || [60];
-
-        if (delayMs > 0) {
-          // ✅ Use vibrate's own silence pattern — no setTimeout needed!
-          // [silence, vibrate] — all inside ONE vibrate() call on the gesture
-          navigator.vibrate([delayMs, ...pattern]);
-        } else {
-          navigator.vibrate(pattern);
-        }
-      }
+      navigator.vibrate([vibrateDuration]);
     }
   };
 
