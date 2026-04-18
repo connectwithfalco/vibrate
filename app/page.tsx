@@ -2,6 +2,7 @@
 
 import { WebHaptics } from "web-haptics";
 import { HapticButton } from "./com";
+import useHaptic from './useHaptic';
 
 export default function Home() {
 
@@ -169,11 +170,19 @@ export default function Home() {
     return () => clearTimeout(timer);
   }
 
-
+  const { trigger } = useHaptic();
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       {/* <button onClick={() => fivesec()}>Vibrate after 5 sec</button><br /><br /> */}
+
+      <button onClick={() => trigger('medium')}>
+        Tap me
+      </button>
+
+      <br />
+      <br />
+      <br />
 
       <button onClick={() => triggerDirectMatchVibration()}>triggerDirectMatchVibration</button><span style={{ color: "green" }}> working</span>  <br />
       <button onClick={() => triggerFullUnmatchedVibration()}>triggerFullUnmatchedVibration</button><span style={{ color: "green" }}> working</span> <br />
