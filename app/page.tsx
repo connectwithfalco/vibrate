@@ -3,6 +3,7 @@
 import { WebHaptics } from "web-haptics";
 import { HapticButton } from "./com";
 import useHaptic from "./useHaptic";
+import vibrationPattern from "./pwa-vibration-api";
 
 export default function Home() {
   // ── These 4 untouched — work fine ─────────────────────────────────────────
@@ -177,6 +178,8 @@ export default function Home() {
       <button onClick={() => fivesec()}>Vibrate after 5 sec</button>
       <span style={{ color: "green" }}> working</span>
       <br />
+
+      <button onClick={() => vibrationPattern()}>vibrationPattern</button>
 
       <HapticButton />
     </div>
