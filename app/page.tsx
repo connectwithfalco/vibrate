@@ -3,6 +3,7 @@
 import { WebHaptics } from "web-haptics";
 import { HapticButton } from "./com";
 import useHaptic from './useHaptic';
+import Link from "next/link";
 
 export default function Home() {
 
@@ -180,6 +181,22 @@ export default function Home() {
         Tap me
       </button>
 
+<Link href="/vibration-test">
+  <button
+    style={{
+      padding: "14px 22px",
+      background: "#111",
+      color: "#fff",
+      borderRadius: "12px",
+      border: "none",
+      cursor: "pointer",
+      fontSize: "16px",
+      marginTop: "20px"
+    }}
+  >
+    Open Vibration Test
+  </button>
+</Link>
       <br />
       <br />
       <br />
