@@ -1,107 +1,88 @@
 "use client";
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { WebHaptics } from "web-haptics";
 import useHaptic from './useHaptic';
 
-// Define the shape of the haptic steps
 interface HapticStep {
   duration: number;
   delay?: number;
   intensity?: number;
 }
 
-// Simple HapticButton mock if you don't have the file
-const HapticButton = () => <button className="p-2 border rounded">Haptic Button Component</button>;
-
 export default function Home() {
   const { trigger } = useHaptic();
+  
+  // Using a ref to track if we have "Active Activation"
+  const audioContextRef = useRef<AudioContext | null>(null);
 
-  /**
-   * FIX: Properly typed 'pattern' as HapticStep[]
-   */
-  const playVibration = (pattern: HapticStep[], delay: number = 0) => {
+  const manageLongDelayVibration = (pattern: HapticStep[], delay: number) => {
+    // STEP 1: Immediate feedback to "claim" the user interaction
+    trigger('light'); 
+    
+    // STEP 2: Resume AudioContext immediately (Crucial for iOS)
+    if (typeof window !== 'undefined') {
+      const AudioContextClass = (window.AudioContext || (window as any).webkitAudioContext);
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioContextClass();
+      }
+      audioContextRef.current.resume();
+    }
+
+    console.log(`Scheduling vibration for ${delay}ms... Stay on the page.`);
+
+    // STEP 3: The Delay
     const timer = setTimeout(() => {
       try {
-        // Ensure this only runs in the browser
-        if (typeof window !== "undefined") {
-          const haptics = new WebHaptics();
-          haptics.trigger(pattern);
-          console.log(`Vibration triggered after ${delay}ms`);
-        }
-      } catch (error) {
-        console.warn("Vibration blocked: Browser security requires user activation < 1000ms.");
+        const haptics = new WebHaptics();
+        haptics.trigger(pattern);
+        console.log("Delayed vibration executed successfully!");
+      } catch (e) {
+        alert("Browser blocked the delayed vibration. Interaction expired.");
       }
     }, delay);
-    
+
     return () => clearTimeout(timer);
   };
 
-  // Pre-defined patterns with explicit typing
-  const directMatchPattern: HapticStep[] = [
-    { delay: 200, duration: 760, intensity: 1 },
-    { delay: 200, duration: 760, intensity: 1 },
-    { delay: 200, duration: 760, intensity: 1 },
-    { delay: 200, duration: 760, intensity: 1 },
-    { delay: 200, duration: 760, intensity: 1 },
-    { delay: 200, duration: 760, intensity: 1 },
-    { delay: 200, duration: 760, intensity: 1 },
-  ];
-
-  const unmatchedPattern: HapticStep[] = [
-    { duration: 40, intensity: 0.7 },
-    { delay: 40, duration: 40, intensity: 0.7 },
-    { delay: 30, duration: 130, intensity: 0.9 },
-    { delay: 50, duration: 50, intensity: 0.6 },
-  ];
-
   return (
-    <div className="flex flex-col gap-4 items-center justify-center min-h-screen bg-zinc-50 dark:bg-black p-10 text-sm text-zinc-900 dark:text-zinc-100">
-      <h1 className="font-bold text-xl mb-4">Haptic TSX Tester</h1>
+    <div className="flex flex-col gap-6 items-center justify-center min-h-screen bg-black text-white p-6">
+      <h1 className="text-xl font-bold border-b border-zinc-800 pb-2">Haptic Bridge Fix</h1>
+      
+      <p className="text-xs text-zinc-400 text-center mb-4">
+        Scheme: We trigger a "Heartbeat" tap immediately to try and keep the 
+        hardware communication channel open for the delayed pulse.
+      </p>
 
-      <button 
-        className="px-6 py-3 bg-blue-600 text-white rounded-lg active:scale-95 transition-transform"
-        onClick={() => trigger('medium')}
-      >
-        Immediate Tap
-      </button>
-
-      <div className="flex flex-col gap-2 w-full max-w-sm mt-6">
-        <button onClick={() => playVibration(directMatchPattern, 0)} className="text-left border p-3 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
-          Direct Match <span className="text-green-500 float-right">Working</span>
-        </button>
-        
-        <button onClick={() => playVibration(unmatchedPattern, 0)} className="text-left border p-3 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
-          Full Unmatched <span className="text-green-500 float-right">Working</span>
+      <div className="grid grid-cols-1 gap-3 w-full max-w-xs">
+        {/* Working normally */}
+        <button 
+          className="p-4 bg-zinc-900 border border-zinc-700 rounded-xl active:bg-zinc-800"
+          onClick={() => manageLongDelayVibration([{ duration: 500 }], 500)}
+        >
+          0.5 Second Delay (Likely OK)
         </button>
 
-        <button onClick={() => playVibration([{ duration: 7000 }], 0)} className="text-left border p-3 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800">
-          Error Pulse (7s) <span className="text-green-500 float-right">Working</span>
+        {/* The "Danger Zone" */}
+        <button 
+          className="p-4 bg-blue-900/30 border border-blue-500/50 rounded-xl active:bg-blue-800"
+          onClick={() => manageLongDelayVibration([{ duration: 800 }], 2000)}
+        >
+          2 Second Delay (Attempting Fix)
         </button>
 
-        <div className="h-px bg-zinc-300 dark:bg-zinc-700 my-4" />
-
-        <button onClick={() => playVibration([{ duration: 800 }], 800)} className="text-left border p-3 rounded opacity-80">
-          Delay 800ms <span className="text-green-500 float-right">Working</span>
-        </button>
-
-        <button onClick={() => playVibration([{ duration: 800 }], 999)} className="text-left border p-3 rounded opacity-80">
-          Delay 999ms <span className="text-orange-500 float-right">Unstable</span>
-        </button>
-
-        <button onClick={() => playVibration([{ duration: 800 }], 2000)} className="text-left border p-3 rounded opacity-50">
-          Delay 2s <span className="text-red-500 float-right">Blocked</span>
+        <button 
+          className="p-4 bg-purple-900/30 border border-purple-500/50 rounded-xl active:bg-purple-800"
+          onClick={() => manageLongDelayVibration([{ duration: 1000 }], 5000)}
+        >
+          5 Second Delay (Experimental)
         </button>
       </div>
 
-      <div className="mt-8">
-        <HapticButton />
+      <div className="mt-10 p-4 bg-yellow-900/20 border border-yellow-700/50 rounded text-[10px] text-yellow-200 uppercase tracking-widest">
+        Warning: If 5s fails, your mobile OS has a hard-lock. 
+        You MUST ask user for another tap at 4.5s.
       </div>
-
-      <footer className="mt-auto text-center text-zinc-500 text-xs max-w-xs">
-        Browser Security: If a vibration is scheduled for {'>'} 1000ms after a click, 
-        the browser cancels the "User Activation" and blocks hardware access.
-      </footer>
     </div>
   );
 }
